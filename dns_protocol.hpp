@@ -9,7 +9,7 @@ to Little Endian used by hosts (used in memory)
 Example: address 0x1234 on Internet would be written 12 and 34 Most significant to less significant
 In memory it would be written 34 12 reversed 
 */
-
+#include "packet_data.hpp"
 
 // DNS Header Definition - Reference: RFC 1035 Section 4.1.1
 // Link: https://datatracker.ietf.org/doc/html/rfc1035#section-4.1.1
@@ -97,7 +97,7 @@ QCLASS: 16 Bit, specifies the class of the query.
     3: CH (Chaos)
     255: * (Any class)
 */
-struct DNSQuestionFooter {
+struct DNSFooter {
     uint16_t qtype;  // Type of record (A, AAAA, MX, etc.)
     uint16_t qclass; // Class of query (usually 1 for Internet)
 
@@ -139,5 +139,7 @@ struct DNSResourceRecord {
     }
 
 }__attribute__((packed)); //Just to make sure
+
+
 
 #endif
