@@ -38,7 +38,8 @@ int main(){
         close(sock); //We close the socket
         return 1;
     }
-
+    //Creation of out threadpool
+    ThreadPool pool;
     std::cout << "Server DNS IPV4 active on  port "<<SERVER_PORT<<std::endl;
 
     /*We create the buffer where we will receive packets
@@ -79,7 +80,21 @@ int main(){
             perror("Error occured while receiving");
             continue;
         }
-        process_dns_packet(rec_buffer, n, sock, cliaddr,len);
+
+         /*
+        Fill a PacketData with a copy of everything recvfrom gave us.
+        We copy the buffer contents so the q has it.
+        */
+        PacketData packet;
+        std::memcpy(packet.buffer, rec_buffer, n);
+        packet.len    = n;
+        packet.cliaddr = cliaddr;
+        packet.clilen  = len;
+        packet.sock    = sock;
+
+        //Hand the packet off to a worker thread and go back to listening
+        pool.push(packet);
+        
 
 
 

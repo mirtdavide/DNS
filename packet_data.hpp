@@ -15,7 +15,7 @@ struct PacketData {
     sockaddr_in    cliaddr;
     socklen_t      clilen;
     int            sock; 
-}__attribute__((packed)); //Just to make sure;
+};
 
 
 #endif

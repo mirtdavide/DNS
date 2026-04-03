@@ -97,6 +97,15 @@ it takes as input the buffer where the message is stored and the n size of the m
 be passed to the send_dns_response function when we call it as we end the processing
 */
 void process_dns_packet(uint8_t* buffer, ssize_t n, int sock, struct sockaddr_in& cliaddr, socklen_t clilen) {
+
+    /*Are we receiving a message with at least 12 Bytes? (DNS Header size) 
+    Also we do some buffer overflow protection for memcpy used after. source: https://sternumiot.com/iot-blog/memcpy-c-function-examples-and-best-practices/
+    */
+    if (n < (ssize_t)sizeof(DNSHeader)) {
+        std::cerr << "Message ignored: too small (" << n << " byte)." << std::endl;
+        return;
+    }
+    
     //1. Header mapping
     
     /*We map the received bytes in the buffer to our defined header so we can extract data in an easier way, 
@@ -116,13 +125,7 @@ void process_dns_packet(uint8_t* buffer, ssize_t n, int sock, struct sockaddr_in
 
     
 
-    /*Are we receiving a message with at least 12 Bytes? (DNS Header size) 
-    Also we do some buffer overflow protection for memcpy used after. source: https://sternumiot.com/iot-blog/memcpy-c-function-examples-and-best-practices/
-    */
-    if (n < (ssize_t)sizeof(DNSHeader)) {
-        std::cerr << "Message ignored: too small (" << n << " byte)." << std::endl;
-        return;
-    }
+
 
     std::cout << "Received " << n << " bytes from a client!" << std::endl;
 
