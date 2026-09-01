@@ -1,0 +1,19 @@
+# Binari compilati
+dns_handler
+dns_server
+
+# Build artifacts (CMake)
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Oggetti compilati
+*.o
+*.obj
+
+# Editor/OS
+.vs/
+*.swp
+.DS_Store
